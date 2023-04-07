@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from eMail import email_send
+from datetime import datetime, timedelta, timezone
 
 app = FastAPI()
 
@@ -29,3 +30,9 @@ async def send_email(email_request: EmailRequest):
         return {"message": "E-mail sent!"}
     except:
         return {"message": "Unauth access!"}
+
+@app.get("/get_time")
+def get_turkey_time():
+    tz = timezone(timedelta(hours=3))  # Türkiye saat dilimi
+    now = datetime.now(tz)
+    return {"turkey_time": now.strftime("%Y-%m-%d %H:%M:%S")}
